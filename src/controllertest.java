@@ -13,7 +13,7 @@ import net.java.games.input.EventQueue;
  */
 public class controllertest {
 
-    public controllertest() {
+    private controllertest() {
         while (true) {
             /* Get the available controllers */
             Controller[] controllers = ControllerEnvironment
@@ -46,7 +46,7 @@ public class controllertest {
                      * across controllers this way. We can not use it to tell
                      * exactly *when* an event happened just the order.
                      */
-                    StringBuffer buffer = new StringBuffer(controllers[i]
+                    StringBuilder buffer = new StringBuilder(controllers[i]
                             .getName());
                     buffer.append(" at ");
                     buffer.append(event.getNanos()).append(", ");
