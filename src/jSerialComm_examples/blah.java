@@ -15,7 +15,8 @@ class nonblocking {
 
                 byte[] readBuffer = new byte[comPort.bytesAvailable()];
                 int numRead = comPort.readBytes(readBuffer, readBuffer.length);
-                System.out.println("Read " + numRead + " bytes.");
+                System.out.println("Read " + numRead + " bytes:  ");
+                System.out.print(readBuffer);
             }
         } catch (Exception e) { e.printStackTrace(); }
         comPort.closePort();
