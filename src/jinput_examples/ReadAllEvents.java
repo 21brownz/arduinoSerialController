@@ -5,7 +5,6 @@ import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 import net.java.games.input.Event;
 import net.java.games.input.EventQueue;
-
 /**
  * This class shows how to use the event queue system in JInput. It will show
  * how to get the controllers, how to get the event queue for a controller, and
@@ -13,9 +12,9 @@ import net.java.games.input.EventQueue;
  *
  * @author Endolf
  */
-public class controllertest {
+public class ReadAllEvents {
 
-    private controllertest() {
+    public ReadAllEvents() {
         while (true) {
             /* Get the available controllers */
             Controller[] controllers = ControllerEnvironment
@@ -48,7 +47,7 @@ public class controllertest {
                      * across controllers this way. We can not use it to tell
                      * exactly *when* an event happened just the order.
                      */
-                    StringBuilder buffer = new StringBuilder(controllers[i]
+                    StringBuffer buffer = new StringBuffer(controllers[i]
                             .getName());
                     buffer.append(" at ");
                     buffer.append(event.getNanos()).append(", ");
@@ -80,12 +79,13 @@ public class controllertest {
             try {
                 Thread.sleep(20);
             } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
     }
 
     public static void main(String[] args) {
-        new controllertest();
+        new ReadAllEvents();
     }
 }

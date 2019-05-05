@@ -3,6 +3,8 @@ package drive;
 import com.fazecast.jSerialComm.SerialPort;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
+import net.java.games.input.Event;
+import net.java.games.input.EventQueue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -44,36 +46,42 @@ public class UpdateRunnable implements Runnable {
             boolean yButton = false;
             byte xAxis = 0;
             byte yAxis = 0;
-            for (Component component : controller.getComponents()) {
-//            System.out.println(component.getName());
 
+            Component[] component = controller.getComponents();
+            for(int i=0;i<component.length;i++) {
 
-
-                if (component.getName().equals("A")) {
-                    aButton = component.getPollData() == 1.0;
+                if (component[i].getName().equals("x")) {
+                    aButton = component[i].getPollData() == 1.0;
                 }
 
-                if (component.getName().equals("B")) {
-                    bButton = component.getPollData() == 1.0;
+                if (component[i].getName().equals("B")) {
+                    bButton = component[i].getPollData() == 1.0;
                 }
 
-                if (component.getName().equals("X")) {
-                    xButton = component.getPollData() == 1.0;
+                if (component[i].getName().equals("X")) {
+                    xButton = component[i].getPollData() == 1.0;
                 }
 
-                if (component.getName().equals("Y")) {
-                    yButton = component.getPollData() == 1.0;
+                if (component[i].getName().equals("Y")) {
+                    yButton = component[i].getPollData() == 1.0;
+                }
+                if (component[i].isAnalog()){
+                    //System.out.println(component.getIdentifier().getName());
+                    if(component[i].getIdentifier().getName().equals("x")){
+                        System.out.println(component[i].getPollData());
+                        //xAxis = (byte)Math.floor(component.getPollData() * 127.99);
+                    }
+                    if (component[i].getIdentifier().getName().equals("y")){
+                        //yAxis = (byte)Math.floor(component.getPollData() * 127.99);
+                        //System.out.println("y axis found");
+                    }
                 }
 
-                if (component.getName().equals("x")) {
-                    xAxis = (byte)Math.floor(component.getPollData() * 127.99);
-                }
-
-                if (component.getName().equals("y")) {
-                    yAxis = (byte)Math.floor(component.getPollData() * 127.99);
-                }
 
             }
+
+
+
 
             byte buttons = (byte) ((aButton ? 1 : 0) + (bButton ? 2 : 0) + (xButton ? 4 : 0) + (yButton ? 8 : 0));
             byte[] packet = new byte[]{xAxis, yAxis, buttons, (byte)255};
