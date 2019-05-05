@@ -3,8 +3,6 @@ package drive;
 import com.fazecast.jSerialComm.SerialPort;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
-import net.java.games.input.Event;
-import net.java.games.input.EventQueue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

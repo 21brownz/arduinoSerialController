@@ -1,10 +1,6 @@
 package jinput_examples;
 
-import net.java.games.input.Component;
-import net.java.games.input.Controller;
-import net.java.games.input.ControllerEnvironment;
-import net.java.games.input.Event;
-import net.java.games.input.EventQueue;
+import net.java.games.input.*;
 /**
  * This class shows how to use the event queue system in JInput. It will show
  * how to get the controllers, how to get the event queue for a controller, and
