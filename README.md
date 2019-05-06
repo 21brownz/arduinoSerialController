@@ -1,7 +1,7 @@
 # arduinoSerialController
 Code for my MemmoCS2 final project
 
-Special thanks to [20nelson](http://github.com/20nelson) for help with jinput and manipulating bytes
+Special thanks to Trevor Nelson for help with jinput and manipulating bytes
 
 ## The Code
 See SerialControlDemo for the Arduino code, and src/drive/ for the java code
