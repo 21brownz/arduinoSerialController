@@ -66,16 +66,14 @@ public class UpdateRunnable implements Runnable {
                 if (component[i].isAnalog()){
                     //System.out.println(component.getIdentifier().getName());
                     if(component[i].getIdentifier().getName().equals("x")){
-                        System.out.println(component[i].getPollData());
-                        //xAxis = (byte)Math.floor(component.getPollData() * 127.99);
+                        //System.out.println("X axis:" +xAxis);
+                        xAxis = (byte)Math.floor(component[i].getPollData() * 127.99);
                     }
                     if (component[i].getIdentifier().getName().equals("y")){
-                        //yAxis = (byte)Math.floor(component.getPollData() * 127.99);
-                        //System.out.println("y axis found");
+                        yAxis = (byte)Math.floor(component[i].getPollData() * 127.99);
+                        //System.out.println("y axis:" +yAxis);
                     }
                 }
-
-
             }
 
 

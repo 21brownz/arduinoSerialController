@@ -1,12 +1,5 @@
-#include <Adafruit_MotorShield.h>
 #include <Servo.h>
-#include <Wire.h>
 #include <Arduino_JSON.h>
-
-
-Adafruit_MotorShield MotorShield = Adafruit_MotorShield();
-Adafruit_DCMotor *leftmotor = MotorShield.getMotor(1);
-Adafruit_DCMotor *rightmotor = MotorShield.getMotor(2);
 
 // Buttons (updated automatically)
 boolean aButton = false;
@@ -18,29 +11,41 @@ boolean yButton = false;
 double xAxis = 0.0;
 double yAxis = 0.0;
 
-
 // Declare variables here:
+Servo servo1;
+Servo servo2;
 
 void robotInit() {
-  Serial.println("boop"); //test message to verify serial comms
-  MotorShield.begin();
+  // runs when Arduino boots, use instead of setup:
+  servo1.attach(9);
+  servo2.attach(10);
+  
 }
+
+void disabledInit() {
+  // runs when robot changes to disabled:
+  servo1.write(0);
+  servo2.write(0);
+}
+
+void disabledLoop() {
+  // runs periodically when disabled:
+  // example: servo.write(90);
+}
+
 void enabledInit() {
+  // runs when robot changes to enabled:
   
-  
-  //woosh
 }
 
 void enabledLoop() {
-
- 
+  // runs periodically when enabled:
+ servo1.write(mapDouble(yAxis,-1.0,1.0,10.0,170.0));
+ servo2.write(mapDouble(xAxis,-1.0,1.0,10.0,170.0));
+  
 }
 
-//
-//
-//
-//
-// everything below is serial comms code.
+// Code to run serial comms
 unsigned long lastControlPacket = -10000;
 uint8_t packet[3];
 boolean disabled = false;
@@ -52,8 +57,8 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available() > 0) {
-    Serial.readBytesUntil((char)255, packet, 4);
+  if(Serial.available() > 0) {
+    Serial.readBytesUntil((char)255, packet,4);
     lastControlPacket = millis();
     aButton = bitRead(packet[2], 0);
     bButton = bitRead(packet[2], 1);
@@ -61,31 +66,34 @@ void loop() {
     yButton = bitRead(packet[2], 3);
     xAxis = byteToDouble(packet[0]);
     yAxis = byteToDouble(packet[1]);
-  }
+  } 
 
-  // has a timeout occured?
-  if (millis() - lastControlPacket > 200) {
-    if (!disabled) {
+  // has a decent amount of time elapsed since last packet?
+  if(millis()-lastControlPacket > 200){
+    if(!disabled) {
       disabled = true;
+      disabledInit();
+    } else {
+      disabledLoop();
     }
     digitalWrite(13, true);
   } else {
-    if (disabled) {
+    if(disabled){
       disabled = false;
       enabledInit();
     } else {
       enabledLoop();
     }
     // blink status
-    digitalWrite(13, round(millis() / 500) % 2 == 0);
+    digitalWrite(13, round(millis()/500) % 2 == 0);
   }
-  delay(20);
+ delay(20);
 }
 
 double byteToDouble(uint8_t b) {
-  return mapDouble((int8_t)b, -128, 127, -1.0, 1.0);
+  return mapDouble((int8_t)b,-128,127,-1.0,1.0);
 }
 
 double mapDouble(double x, double in_min, double in_max, double out_min, double out_max) {
-  return (double)(x - in_min) * (out_max - out_min) / (double)(in_max - in_min) + out_min;
+ return (double)(x - in_min) * (out_max - out_min) / (double)(in_max - in_min) + out_min;
 }
